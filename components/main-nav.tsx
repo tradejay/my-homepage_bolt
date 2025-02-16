@@ -76,7 +76,7 @@ export function MainNav() {
   return (
     <div className="flex justify-between py-2 items-center">
       <NavigationMenu className="flex-1 justify-center">
-        <NavigationMenuList className="grid grid-cols-3 gap-4">
+        <NavigationMenuList className="flex gap-4">
           {/* Report */}
           <NavigationMenuItem>
             <Link
@@ -114,7 +114,7 @@ export function MainNav() {
 
           {/* 기업동향 */}
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent px-2 text-center">
+            <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent text-center">
               기업동향
             </NavigationMenuTrigger>
             <NavigationMenuContent className="bg-white">
