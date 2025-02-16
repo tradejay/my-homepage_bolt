@@ -9,6 +9,6 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    persistSession: false // Since we're in a client component, we don't want to persist the session
+    persistSession: true // Since we're in a client component, we don't want to persist the session
   }
 });

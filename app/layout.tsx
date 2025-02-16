@@ -1,13 +1,15 @@
-import './globals.css';
-import type { Metadata } from 'next';
+// app/layout.tsx
+import "./globals.css";
+import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { MainNav } from "@/components/main-nav";
 import { Footer } from "@/components/footer";
 import { TopHeader } from "@/components/top-header";
+import SearchDropdown from "@/components/search-dropdown";
 
 export const metadata: Metadata = {
-  title: 'Healthcare Industry Blog',
-  description: 'Comprehensive coverage of healthcare industry trends and news',
+  title: "Healthcare Industry Blog",
+  description: "Comprehensive coverage of healthcare industry trends and news",
 };
 
 export default function RootLayout({
@@ -28,11 +30,18 @@ export default function RootLayout({
             <header>
               <TopHeader />
               <div className="border-b">
-                <div className="container max-w-[1400px] mx-auto px-4 lg:px-8">
-                  <div className="py-4">
-                    <h1 className="text-2xl font-bold text-gray-900">Healthcare Industry Blog</h1>
+                {/* 헤더 영역을 flex로 만들어 왼쪽에 타이틀+메뉴, 오른쪽에 검색 바 배치 */}
+                <div className="container max-w-[1400px] mx-auto px-4 lg:px-8 flex items-center justify-between">
+                  <div>
+                    <div className="py-4">
+                      <h1 className="text-2xl font-bold text-gray-900">
+                        Healthcare Industry Blog
+                      </h1>
+                    </div>
+                    <MainNav />
                   </div>
-                  <MainNav />
+                  {/* 우측 상단 검색 바 */}
+                  <SearchDropdown />
                 </div>
               </div>
             </header>

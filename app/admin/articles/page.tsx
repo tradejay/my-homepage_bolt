@@ -69,6 +69,30 @@ export default function AdminArticlesPage() {
     }
   };
 
+  const handleSlideChange = async (post: Post, newValue: boolean) => {
+    const { error } = await supabase
+      .from("posts")
+      .update({ is_slide: newValue })
+      .eq("id", post.id);
+
+    if (error) {
+      console.error("Error updating slide status:", error);
+      toast({
+        title: "Error",
+        description: "Failed to update slide status",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: newValue
+          ? "Article added to slider"
+          : "Article removed from slider",
+      });
+      fetchPosts();
+    }
+  };
+
   if (loading) {
     return <div className="container mx-auto px-4 py-8">Loading...</div>;
   }
@@ -92,6 +116,8 @@ export default function AdminArticlesPage() {
               <TableHead>Title</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Date</TableHead>
+              <TableHead>Creator</TableHead>
+              <TableHead>Slide</TableHead>
               <TableHead className="w-[100px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -102,6 +128,14 @@ export default function AdminArticlesPage() {
                 <TableCell>{post.category}</TableCell>
                 <TableCell>
                   {new Date(post.date || post.created_at).toLocaleDateString()}
+                </TableCell>
+                <TableCell>{post.user_id}</TableCell>
+                <TableCell>
+                  <input
+                    type="checkbox"
+                    checked={post.is_slide} disabled className="mr-2"
+                    onChange={(e) => handleSlideChange(post, e.target.checked)}
+                  />
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">

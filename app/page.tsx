@@ -33,6 +33,7 @@ export default function Home() {
           .from('posts')
           .select('*')
           .eq('category', category.path)
+          .eq("is_slide",false)
           .order('date', { ascending: false })
           .limit(3);
         

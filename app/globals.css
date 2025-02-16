@@ -95,3 +95,17 @@
     @apply text-muted-foreground;
   }
 }
+
+/* react-calendar 오버라이드: 타일 높이, 폰트 크기 등 */
+.react-calendar {
+  /* Tailwind 클래스와 충돌되지 않도록 최소 설정만 */
+  font-size: 1rem; /* 필요 시 조정 */
+  width: 100% !important;
+  height: 90% !important;
+}
+
+.react-calendar__tile {
+  min-height: 150px; /* 타일 높이를 늘려 일정 표시 공간 확보 */
+  vertical-align: top; /* 내용이 위쪽 정렬되도록 */
+  padding: 0.5rem; /* 필요 시 조정 */
+}
