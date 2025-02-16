@@ -1,6 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+
+interface Article {
+  id: any;
+  title: any;
+  description: any;
+  link: any;
+}
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Youtube, BookOpen, Bell, ExternalLink } from "lucide-react";
@@ -8,7 +15,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
 export function Sidebar() {
-  const [slideArticles, setSlideArticles] = useState([]);
+  const [slideArticles, setSlideArticles] = useState<Article[]>([]);
 
   useEffect(() => {
     const fetchSlideArticles = async () => {

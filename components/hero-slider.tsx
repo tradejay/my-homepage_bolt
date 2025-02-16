@@ -13,8 +13,16 @@ import { ArrowRight } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 
+// 슬라이드 아티클의 타입 정의
+interface SlideArticle {
+  id: string;
+  title: string;
+  description: string | null;
+  image_url: string | null;
+}
+
 export function HeroSlider() {
-  const [slideArticles, setSlideArticles] = useState([]);
+  const [slideArticles, setSlideArticles] = useState<SlideArticle[]>([]);
 
   useEffect(() => {
     const fetchSlideArticles = async () => {

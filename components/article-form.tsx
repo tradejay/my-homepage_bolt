@@ -6,8 +6,11 @@ import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import { useAdminSession } from "@/lib/admin-auth"; // 관리자 세션 훅 임포트
 
-export default function ArticleForm() {
-  const { id } = useParams();
+interface ArticleFormProps {
+  id?: string;  // id를 optional prop으로 정의
+}
+
+export default function ArticleForm({ id }: ArticleFormProps) {
   const router = useRouter();
   const { toast } = useToast();
   const { adminUser, loading: adminLoading } = useAdminSession(); // 단일 관리자 세션 소스 사용
@@ -68,7 +71,6 @@ export default function ArticleForm() {
     setLoading(true);
 
     try {
-      // 관리자 인증 확인: 관리자 세션이 없으면 작업 중단
       if (!adminUser) {
         toast({
           title: "Error",
@@ -82,13 +84,11 @@ export default function ArticleForm() {
         title,
         category,
         content,
-        // 날짜를 ISO 형식에서 "YYYY-MM-DD"만 추출
         date: new Date(date).toISOString().split("T")[0],
         is_slide: isSlide,
         image_url: imgUrl.trim() !== "" ? imgUrl.trim() : null,
       };
 
-      // isSlide 체크 시 description 값을 추가
       if (isSlide) {
         articleData.description = description;
       }
@@ -96,32 +96,24 @@ export default function ArticleForm() {
       let error;
       if (id) {
         // 게시글 업데이트
-        const { error: updateError, count, data } = await supabase
+        const { error: updateError } = await supabase
           .from("posts")
-          .update(articleData, { returning: "representation" })
+          .update(articleData)
           .eq("id", id)
-          .eq("user_id", adminUser.id);
-
-        console.log("Update error:", updateError);
-        console.log("Updated count:", count);
-        console.log("Returned data:", data);
+          .eq("user_id", adminUser.id)
+          .select()
+          .single();
 
         if (updateError) {
           error = updateError;
-        } else if (count === 0) {
-          alert("게시물 작성자가 아니라서 수정할 수 없습니다.");
-          toast({
-            title: "Warning",
-            description: "You are not the logged in user.",
-            variant: "destructive",
-          });
-          return;
         }
       } else {
         // 새로운 게시글 생성
         const { error: insertError } = await supabase
           .from("posts")
-          .insert([{ ...articleData, user_id: adminUser.id }]);
+          .insert([{ ...articleData, user_id: adminUser.id }])
+          .select()
+          .single();
 
         if (insertError) {
           error = insertError;

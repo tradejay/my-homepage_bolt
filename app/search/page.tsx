@@ -1,5 +1,6 @@
 // app/search/page.tsx
-import { headers } from "next/headers";
+export const dynamic = "force-dynamic";
+import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { redirect } from "next/navigation";
 
@@ -10,8 +11,8 @@ export default async function SearchPage({
 }) {
   const query = searchParams.q || "";
 
-  // 서버 컴포넌트용 Supabase 클라이언트 생성 (쿠키 기반 인증 등 필요 시)
-  const supabase = createServerComponentClient({ headers });
+  // 서버 컴포넌트용 Supabase 클라이언트 생성
+  const supabase = createServerComponentClient({ cookies });
 
   // 검색어가 없는 경우, 빈 화면이나 안내 메시지 표시
   if (!query.trim()) {
