@@ -76,7 +76,7 @@ export function MainNav() {
   return (
     <div className="flex justify-between py-2 items-center">
       <NavigationMenu className="flex-1 justify-center">
-        <NavigationMenuList className="flex gap-4">
+        <NavigationMenuList className="grid grid-cols-3 gap-2 md:flex md:gap-4">
           {/* Report */}
           <NavigationMenuItem>
             <Link
