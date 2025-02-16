@@ -18,6 +18,7 @@ export default function ArticleForm() {
   const [content, setContent] = useState("");
   const [isSlide, setIsSlide] = useState(false);
   const [imgUrl, setImgUrl] = useState("");
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
 
   // 관리자 세션 체크: 관리자가 아니라면 로그인 페이지로 이동
@@ -54,6 +55,9 @@ export default function ArticleForm() {
       setContent(data.content);
       setIsSlide(data.is_slide);
       setImgUrl(data.image_url || "");
+      if (data.description) {
+        setDescription(data.description);
+      }
     }
 
     fetchArticle();
@@ -81,9 +85,13 @@ export default function ArticleForm() {
         // 날짜를 ISO 형식에서 "YYYY-MM-DD"만 추출
         date: new Date(date).toISOString().split("T")[0],
         is_slide: isSlide,
-        // is_slide 여부와 상관없이 항상 image_url을 저장
         image_url: imgUrl.trim() !== "" ? imgUrl.trim() : null,
       };
+
+      // isSlide 체크 시 description 값을 추가
+      if (isSlide) {
+        articleData.description = description;
+      }
 
       let error;
       if (id) {
@@ -145,7 +153,6 @@ export default function ArticleForm() {
     }
   };
 
-  // 관리자 세션 로딩 중일 때 로딩 화면 표시
   if (adminLoading) {
     return <div>Loading...</div>;
   }
@@ -217,18 +224,37 @@ export default function ArticleForm() {
             className="mt-1 block w-full border border-gray-300 rounded-md p-2 h-32"
           ></textarea>
         </div>
-        {/* is_slide 체크박스 */}
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="isSlide"
-            checked={isSlide}
-            onChange={(e) => setIsSlide(e.target.checked)}
-            className="mr-2"
-          />
-          <label htmlFor="isSlide" className="text-sm font-medium text-gray-700">
-            Display on Slider
-          </label>
+        {/* 그룹화된 Display on Slider 및 Description 영역 */}
+        <div className="border p-4 rounded bg-gray-50">
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="isSlide"
+              checked={isSlide}
+              onChange={(e) => setIsSlide(e.target.checked)}
+              className="mr-2"
+            />
+            <label htmlFor="isSlide" className="text-sm font-medium text-gray-700">
+              Display on Slider
+            </label>
+          </div>
+          {isSlide && (
+            <div className="mt-2">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Description
+              </label>
+              <textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2 h-24"
+                placeholder="슬라이더에 표시할 설명을 입력하세요"
+              ></textarea>
+            </div>
+          )}
         </div>
         <div>
           <button
