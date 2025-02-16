@@ -8,8 +8,7 @@ const cities = [
   { name: "뉴욕", timezone: "America/New_York" },
   { name: "런던", timezone: "Europe/London" },
   { name: "도쿄", timezone: "Asia/Tokyo" },
-  { name: "베이징", timezone: "Asia/Shanghai" },
-  { name: "서울", timezone: "Asia/Seoul" }
+  { name: "베이징", timezone: "Asia/Shanghai" }
 ];
 
 export function WorldTime() {

@@ -101,7 +101,7 @@
   /* Tailwind 클래스와 충돌되지 않도록 최소 설정만 */
   font-size: 1rem; /* 필요 시 조정 */
   width: 100% !important;
-  height: 90% !important;
+  min-height: 500px; /* 최소 높이 설정 */
 }
 
 .react-calendar__tile {

@@ -119,11 +119,11 @@ export function ArticleContent({ params }: { params: { id: string } }) {
 
           {/* Featured Image */}
           {post.image_url && (
-            <div className="relative w-full h-[400px] mb-8 rounded-lg overflow-hidden">
+            <div className="relative w-full mb-8 rounded-lg overflow-hidden">
               <img
                 src={post.image_url}
                 alt={post.title}
-                className="object-cover w-full h-full"
+                className="object-cover w-full max-w-full"
               />
             </div>
           )}

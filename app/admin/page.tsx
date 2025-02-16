@@ -24,7 +24,7 @@ export default function AdminDashboard() {
     <div className="flex flex-col max-h-screen bg-gray-100">
       {/* 탭 네비게이션 상단 고정 */}
       <div className="bg-white shadow-md w-full flex justify-center">
-        <div className="flex w-full max-w-10xl">
+        <div className="flex flex-col sm:flex-row w-full max-w-10xl">
           {["articles", "calendar"].map((tab) => (
             <button
               key={tab}
@@ -33,7 +33,7 @@ export default function AdminDashboard() {
                 activeTab === tab
                   ? "border-b-4 border-blue-500 text-blue-500 font-bold"
                   : "text-gray-500"
-              }`}
+              } sm:w-1/2`}
             >
               {tab === "articles" ? "기사 관리" : "일정 관리"}
             </button>
@@ -42,7 +42,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* 컨텐츠 영역 */}
-      <div className="flex flex-col items-center justify-center flex-1 p-6 w-full max-w-10xl">
+      <div className="flex flex-col items-center justify-center flex-1 w-full max-w-10xl">
         {activeTab === "articles" && <ArticlesManagement />}
         {activeTab === "calendar" && <CalendarManagement />}
       </div>

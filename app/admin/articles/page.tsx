@@ -109,7 +109,7 @@ export default function AdminArticlesPage() {
         </Button>
       </div>
 
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-white rounded-lg shadow overflow-x-auto max-h-[600px] overflow-y-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -124,12 +124,12 @@ export default function AdminArticlesPage() {
           <TableBody>
             {posts.map((post) => (
               <TableRow key={post.id}>
-                <TableCell className="font-medium">{post.title}</TableCell>
-                <TableCell>{post.category}</TableCell>
-                <TableCell>
+                <TableCell className="font-medium truncate">{post.title}</TableCell>
+                <TableCell className="truncate">{post.category}</TableCell>
+                <TableCell className="truncate">
                   {new Date(post.date || post.created_at).toLocaleDateString()}
                 </TableCell>
-                <TableCell>{post.user_id}</TableCell>
+                <TableCell className="truncate">{post.user_id}</TableCell>
                 <TableCell>
                   <input
                     type="checkbox"

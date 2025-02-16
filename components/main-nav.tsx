@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { getAdminUser } from "@/lib/admin-auth";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -61,145 +62,154 @@ const ListItem = React.forwardRef<
 ListItem.displayName = "ListItem";
 
 export function MainNav() {
+  const [isAdmin, setIsAdmin] = React.useState<boolean | null>(null);
+
+  React.useEffect(() => {
+    const checkAdmin = async () => {
+      const user = await getAdminUser();
+      setIsAdmin(!!user);
+    };
+
+    checkAdmin();
+  }, []);
+
   return (
-    <NavigationMenu className="flex justify-center py-2">
-      <NavigationMenuList className="space-x-0.5">
-        {/* Home */}
-        <NavigationMenuItem>
-          <Link href="/" className="text-sm font-medium text-primary hover:text-primary/80 px-2 py-2">
-            Home
-          </Link>
-        </NavigationMenuItem>
+    <div className="flex justify-between py-2 items-center">
+      <NavigationMenu className="flex-1 justify-center">
+        <NavigationMenuList className="grid grid-cols-3 gap-4">
+          {/* Report */}
+          <NavigationMenuItem>
+            <Link
+              href="/report"
+              className="text-sm font-medium text-primary hover:text-primary/80 py-2 text-center"
+            >
+              Report
+            </Link>
+          </NavigationMenuItem>
 
-        {/* Report */}
-        <NavigationMenuItem>
-          <Link href="/report" className="text-sm font-medium text-primary hover:text-primary/80 px-2 py-2">
-            Report
-          </Link>
-        </NavigationMenuItem>
+          {/* 경제동향 */}
+          <NavigationMenuItem>
+            <Link href="/economic-trends" className="text-sm font-medium text-primary hover:text-primary/80 py-2 text-center">
+              경제동향
+            </Link>
+          </NavigationMenuItem>
 
-        {/* 경제동향 */}
-        <NavigationMenuItem>
-          <Link href="/economic-trends" className="text-sm font-medium text-primary hover:text-primary/80 px-2 py-2">
-            경제동향
-          </Link>
-        </NavigationMenuItem>
+          {/* 산업동향 */}
+          <NavigationMenuItem>
+            <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent text-center">
+              산업동향
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="bg-white">
+              <ul className="grid w-full gap-2 p-4 grid-cols-1 sm:grid-cols-2 sm:w-[400px]">
+                {industryItems.map((item) => (
+                  <ListItem
+                    key={item.href}
+                    href={item.href}
+                    title={item.title}
+                  />
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
 
-        {/* 산업동향 */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent px-2">
-            산업동향
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="bg-white">
-            <ul className="grid w-[400px] gap-2 p-4 grid-cols-2">
-              {industryItems.map((item) => (
-                <ListItem
-                  key={item.href}
-                  href={item.href}
-                  title={item.title}
-                />
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+          {/* 기업동향 */}
+          <NavigationMenuItem>
+            <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent px-2 text-center">
+              기업동향
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="bg-white">
+              <ul className="grid w-full gap-2 p-4 grid-cols-1 sm:grid-cols-2 sm:w-[400px]">
+                {industryItems.map((item) => (
+                  <ListItem
+                    key={item.href}
+                    href={item.href.replace('industry', 'company')}
+                    title={item.title}
+                  />
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
 
-        {/* 기업동향 */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent px-2">
-            기업동향
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="bg-white">
-            <ul className="grid w-[400px] gap-2 p-4 grid-cols-2">
-              {industryItems.map((item) => (
-                <ListItem
-                  key={item.href}
-                  href={item.href.replace('industry', 'company')}
-                  title={item.title}
-                />
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+          {/* 정책동향 */}
+          <NavigationMenuItem>
+            <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent text-center">
+              정책동향
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="bg-white">
+              <ul className="grid w-full gap-2 p-4 grid-cols-1 sm:grid-cols-2 sm:w-[400px]">
+                {industryItems.map((item) => (
+                  <ListItem
+                    key={item.href}
+                    href={item.href.replace('industry', 'policy')}
+                    title={item.title}
+                  />
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
 
-        {/* 정책동향 */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent px-2">
-            정책동향
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="bg-white">
-            <ul className="grid w-[400px] gap-2 p-4 grid-cols-2">
-              {industryItems.map((item) => (
-                <ListItem
-                  key={item.href}
-                  href={item.href.replace('industry', 'policy')}
-                  title={item.title}
-                />
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+          {/* 언론동향 */}
+          <NavigationMenuItem>
+            <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent text-center">
+              언론동향
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="bg-white">
+              <ul className="grid w-full gap-2 p-4 grid-cols-1 sm:grid-cols-2 sm:w-[400px]">
+                {industryItems.map((item) => (
+                  <ListItem
+                    key={item.href}
+                    href={item.href.replace('industry', 'media')}
+                    title={item.title}
+                  />
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
 
-        {/* 언론동향 */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent px-2">
-            언론동향
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="bg-white">
-            <ul className="grid w-[400px] gap-2 p-4 grid-cols-2">
-              {industryItems.map((item) => (
-                <ListItem
-                  key={item.href}
-                  href={item.href.replace('industry', 'media')}
-                  title={item.title}
-                />
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+          {/* 인물 */}
+          <NavigationMenuItem>
+            <Link href="/people" className="text-sm font-medium text-primary hover:text-primary/80 py-2 text-center">
+              인물
+            </Link>
+          </NavigationMenuItem>
 
-        {/* 인물 */}
-        <NavigationMenuItem>
-          <Link href="/people" className="text-sm font-medium text-primary hover:text-primary/80 px-2 py-2">
-            인물
-          </Link>
-        </NavigationMenuItem>
+          {/* 미디어리뷰 */}
+          <NavigationMenuItem>
+            <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent px-2 text-center">
+              미디어리뷰
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="bg-white">
+              <ul className="grid w-full gap-2 p-4 grid-cols-1 sm:grid-cols-2 sm:w-[400px]">
+                {mediaReviewItems.map((item) => (
+                  <ListItem
+                    key={item.href}
+                    href={item.href}
+                    title={item.title}
+                  />
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
 
-        {/* 미디어리뷰 */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent px-2">
-            미디어리뷰
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="bg-white">
-            <ul className="grid w-[400px] gap-2 p-4 grid-cols-2">
-              {mediaReviewItems.map((item) => (
-                <ListItem
-                  key={item.href}
-                  href={item.href}
-                  title={item.title}
-                />
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-
-        {/* 주요일정 */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent px-2">
-            주요일정
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="bg-white">
-            <ul className="grid w-[400px] gap-2 p-4 grid-cols-2">
-              {keyScheduleItems.map((item) => (
-                <ListItem
-                  key={item.href}
-                  href={item.href}
-                  title={item.title}
-                />
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+          {/* 주요일정 */}
+          <NavigationMenuItem>
+            <NavigationMenuTrigger className="text-sm font-medium text-primary hover:text-primary/80 bg-transparent hover:bg-transparent px-2 text-center">
+              주요일정
+            </NavigationMenuTrigger>
+            <NavigationMenuContent className="bg-white">
+              <ul className="grid w-full gap-2 p-4 grid-cols-1 sm:grid-cols-2 sm:w-[400px]">
+                {keyScheduleItems.map((item) => (
+                  <ListItem
+                    key={item.href}
+                    href={item.href}
+                    title={item.title}
+                  />
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
   );
 }

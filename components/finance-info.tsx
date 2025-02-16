@@ -125,7 +125,7 @@ export function FinanceInfo() {
   }
 
   return (
-    <div className="relative h-[140px] border-2 border-primary/50 rounded-lg p-4">
+    <div className="relative h-[240px] sm:h-[400px] border-2 border-primary/50 rounded-lg p-4">
       {/* Title */}
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-4">
         <div className="flex items-center gap-2 text-gray-500">
@@ -133,13 +133,13 @@ export function FinanceInfo() {
             <div
               key={info.title}
               className={cn(
-                "flex items-center gap-1 transition-opacity duration-300",
+                "flex items-center gap-1 transition-opacity duration-300 whitespace-nowrap overflow-hidden truncate",
                 currentIndex === index ? "opacity-100" : "opacity-50"
               )}
             >
               {index > 0 && <span className="mx-2">/</span>}
               <info.icon className="h-4 w-4" />
-              <span className="text-sm font-medium">{info.title}</span>
+              <span className="text-sm font-medium truncate">{info.title}</span>
             </div>
           ))}
         </div>
@@ -150,7 +150,7 @@ export function FinanceInfo() {
         {/* 주요 지수 현황 */}
         <div
           className={cn(
-            "absolute w-full transition-all duration-300 ease-in-out grid grid-cols-5 gap-4",
+            "absolute w-full transition-all duration-300 ease-in-out grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4",
             currentIndex === 0
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-4 pointer-events-none"
@@ -158,14 +158,14 @@ export function FinanceInfo() {
         >
           {indices.map((index) => (
             <div key={index.name} className="text-center">
-              <div className="text-sm text-gray-500 mb-1">{index.name}</div>
-              <div className="text-base font-bold text-gray-700">
+              <div className="text-xs text-gray-500 mb-1 truncate">{index.name}</div>
+              <div className="text-sm font-bold text-gray-700 truncate">
                 {index.value.toLocaleString(undefined, {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 2
                 })}
               </div>
-              <div className={`text-sm ${index.change > 0 ? "text-green-500" : "text-red-500"}`}>
+              <div className={`text-xs ${index.change > 0 ? "text-green-500" : "text-red-500"} truncate`}>
                 {index.change > 0 ? "▲" : "▼"}
               </div>
             </div>
@@ -174,17 +174,17 @@ export function FinanceInfo() {
 
         {/* 주요 도시 시간 */}
         <div
-          className={cn(
-            "absolute w-full transition-all duration-300 ease-in-out grid grid-cols-5 gap-4",
+className={cn(
+            "absolute w-full h-full transition-all duration-300 ease-in-out grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 items-center justify-center overflow-y-auto",
             currentIndex === 1
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-4 pointer-events-none"
           )}
         >
           {times.map((city) => (
-            <div key={city.name} className="text-center">
-              <div className="text-sm text-gray-500 mb-1">{city.name}</div>
-              <div className="text-base font-bold text-gray-700">{city.time}</div>
+<div key={city.name} className="text-center">
+            <div className="text-[0.7rem] text-gray-500 mb-0.5 truncate leading-[0.75rem]">{city.name}</div>
+            <div className="text-sm font-bold text-gray-700 truncate leading-[0.75rem]">{city.time}</div>
             </div>
           ))}
         </div>
@@ -192,7 +192,7 @@ export function FinanceInfo() {
         {/* 환율 정보 */}
         <div
           className={cn(
-            "absolute w-full transition-all duration-300 ease-in-out grid grid-cols-5 gap-4",
+            "absolute w-full transition-all duration-300 ease-in-out grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4",
             currentIndex === 2
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-4 pointer-events-none"
@@ -200,11 +200,11 @@ export function FinanceInfo() {
         >
           {rates.map((rate) => (
             <div key={rate.currency} className="text-center">
-              <div className="text-sm text-gray-500 mb-1">{rate.currency}</div>
-              <div className="text-base font-bold text-gray-700">
+              <div className="text-xs text-gray-500 mb-1 truncate">{rate.currency}</div>
+              <div className="text-sm font-bold text-gray-700">
                 {rate.rate.toFixed(2)}
               </div>
-              <div className={`text-sm ${rate.trend === "up" ? "text-green-500" : "text-red-500"}`}>
+              <div className={`text-xs ${rate.trend === "up" ? "text-green-500" : "text-red-500"}`}>
                 {rate.trend === "up" ? "▲" : "▼"}
               </div>
             </div>

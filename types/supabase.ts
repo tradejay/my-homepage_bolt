@@ -9,6 +9,8 @@ export type Post = {
   author_id: string | null;
   image_url?: string;
   date?: string;
+  user_id: string;
+  is_slide: boolean;
 };
 
 export type Profile = {

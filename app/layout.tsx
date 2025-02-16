@@ -1,16 +1,12 @@
 // app/layout.tsx
 import "./globals.css";
-import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { MainNav } from "@/components/main-nav";
 import { Footer } from "@/components/footer";
 import { TopHeader } from "@/components/top-header";
 import SearchDropdown from "@/components/search-dropdown";
-
-export const metadata: Metadata = {
-  title: "Healthcare Industry Blog",
-  description: "Comprehensive coverage of healthcare industry trends and news",
-};
+import Link from "next/link";
+import * as React from "react";
 
 export default function RootLayout({
   children,
@@ -19,6 +15,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
       <body>
         <ThemeProvider
           attribute="class"
@@ -31,12 +30,15 @@ export default function RootLayout({
               <TopHeader />
               <div className="border-b">
                 {/* 헤더 영역을 flex로 만들어 왼쪽에 타이틀+메뉴, 오른쪽에 검색 바 배치 */}
-                <div className="container max-w-[1400px] mx-auto px-4 lg:px-8 flex items-center justify-between">
-                  <div>
-                    <div className="py-4">
-                      <h1 className="text-2xl font-bold text-gray-900">
+                <div className="container max-w-[1400px] mx-auto px-4 lg:px-8 flex flex-col sm:flex-row items-center justify-between">
+                  <div className="w-full sm:w-auto">
+                    <div className="py-4 flex items-center justify-between">
+                      <Link
+                        href="/"
+                        className="text-2xl font-bold text-gray-900"
+                      >
                         Healthcare Industry Blog
-                      </h1>
+                      </Link>
                     </div>
                     <MainNav />
                   </div>

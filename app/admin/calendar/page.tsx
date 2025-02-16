@@ -96,10 +96,11 @@ export default function CalendarManagement() {
             {dayEvents.slice(0, 2).map((ev) => (
               <li
                 key={ev.id}
-                className={`text-xs rounded px-1 truncate ${getColorForEventId(
+                className={`text-xs rounded px-1 overflow-hidden text-ellipsis ${getColorForEventId(
                   ev.id
                 )}`}
                 title={ev.title}
+                style={{ wordBreak: "break-all" }}
               >
                 {ev.title}
               </li>
@@ -280,11 +281,11 @@ export default function CalendarManagement() {
   });
 
   return (
-    <div className="w-full h-screen flex flex-col p-4 space-y-4">
+    <div className="w-full h-screen flex flex-col space-y-4">
       <h2 className="text-2xl font-bold">일정 관리</h2>
 
       {/* 월간 일정 조회 영역 */}
-      <div className="mb-4 border p-4 rounded bg-white">
+      <div className="mb-4 border rounded bg-white">
         <div className="flex items-center justify-between">
           <p className="font-semibold">
             {format(selectedDate, "yyyy년 MM월")} 월간 일정
@@ -321,9 +322,11 @@ export default function CalendarManagement() {
           tileContent={tileContent}
           onActiveStartDateChange={({ activeStartDate }) => {
             // activeStartDate는 해당 달의 첫날을 나타냅니다.
-            setSelectedDate(activeStartDate);
+            if (activeStartDate) {
+              setSelectedDate(activeStartDate);
+            }
           }}
-          className="w-full h-full text-base p-4"
+          className="w-full h-full text-base"
           showFixedNumberOfWeeks={false}
           showNeighboringMonth={false}
         />
@@ -335,7 +338,7 @@ export default function CalendarManagement() {
         onRequestClose={() => setModalIsOpen(false)}
         contentLabel="일정 등록/수정"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-        className="bg-white p-6 rounded shadow-lg max-w-md w-full mx-auto outline-none"
+        className="bg-white rounded shadow-lg max-w-md w-full mx-auto outline-none sm:max-w-full sm:h-4/5 sm:overflow-y-auto"
       >
         <h2 className="text-xl font-bold mb-4">
           {isMonthlyMode
@@ -351,14 +354,14 @@ export default function CalendarManagement() {
               {selectedDayEvents.map((ev) => (
                 <li
                   key={ev.id}
-                  className="flex items-center justify-between border p-2 rounded"
+                  className="flex items-center justify-between border p-2 rounded truncate"
                 >
-                  <div onClick={() => handleEventClick(ev)} className="cursor-pointer">
-                    <p className="text-sm">
+                  <div onClick={() => handleEventClick(ev)} className="cursor-pointer truncate">
+                    <p className="text-sm truncate">
                       {format(parseISO(ev.start_date), "yyyy-MM-dd")} ~{" "}
                       {format(parseISO(ev.end_date), "yyyy-MM-dd")}
                     </p>
-                    <p className="font-bold">{ev.title}</p>
+                    <p className="font-bold truncate">{ev.title}</p>
                   </div>
                   <button
                     onClick={() => handleDeleteEvent(ev.id)}
