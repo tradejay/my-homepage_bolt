@@ -13,15 +13,20 @@ import { ArrowRight } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 
+interface Article {
+  id: string;
+  title: string;
+  description: string;
+  image_url: string;
+}
+
 export function HeroSlider() {
-  const [slideArticles, setSlideArticles] = useState([]);
+  const [slideArticles, setSlideArticles] = useState<Article[]>([]);
 
   useEffect(() => {
     const fetchSlideArticles = async () => {
       const { data, error } = await supabase
         .from("posts")
-        // posts 테이블에서 필요한 필드를 선택합니다.
-        // is_slide가 true인 게시글만 가져옵니다.
         .select("id, title, description, image_url")
         .eq("is_slide", true)
         .order("created_at", { ascending: false });

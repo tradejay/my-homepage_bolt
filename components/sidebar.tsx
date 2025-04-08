@@ -7,8 +7,15 @@ import { Youtube, BookOpen, Bell, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
+interface Article {
+  id: any;
+  title: any;
+  description: any;
+  link: any;
+}
+
 export function Sidebar() {
-  const [slideArticles, setSlideArticles] = useState([]);
+  const [slideArticles, setSlideArticles] = useState<Article[]>([]);
 
   useEffect(() => {
     const fetchSlideArticles = async () => {

@@ -10,7 +10,9 @@ export async function GET() {
       .limit(1);
 
     if (tableError?.code === 'PGRST204') {
-      const { error: createError } = await supabaseAdmin.query(`
+      // Using the raw REST API to execute SQL
+      const { error: createError } = await supabaseAdmin.rpc('exec_sql', {
+        sql_query: `
         CREATE TABLE IF NOT EXISTS calendar_events (
           id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
           title text NOT NULL,
@@ -52,7 +54,8 @@ export async function GET() {
           FOR DELETE
           TO authenticated
           USING (auth.uid() = user_id);
-      `);
+        `
+      });
 
       if (createError) {
         throw createError;

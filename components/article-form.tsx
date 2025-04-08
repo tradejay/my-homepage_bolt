@@ -6,8 +6,11 @@ import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import { useAdminSession } from "@/lib/admin-auth"; // 관리자 세션 훅 임포트
 
-export default function ArticleForm() {
-  const { id } = useParams();
+interface ArticleFormProps {
+  id?: string;
+}
+
+export default function ArticleForm({ id }: ArticleFormProps) {
   const router = useRouter();
   const { toast } = useToast();
   const { adminUser, loading: adminLoading } = useAdminSession(); // 단일 관리자 세션 소스 사용
@@ -98,7 +101,7 @@ export default function ArticleForm() {
         // 게시글 업데이트
         const { error: updateError, count, data } = await supabase
           .from("posts")
-          .update(articleData, { returning: "representation" })
+          .update(articleData)
           .eq("id", id)
           .eq("user_id", adminUser.id);
 
